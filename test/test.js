@@ -120,15 +120,15 @@ describe('refine', function() {
         it('threshold(1,20) should keep only rows whose value at column 1 is >= 20', function(done) {
 
             streamify([
-                [0, 5, 2, 3],	
-                [0, 25, 2, 3],	// only this should remain
-                [0, 3, 2, 3]	
+                [0, 19, 2, 3],	
+                [0, 20, 2, 3],	// only this should remain
+                [0, 21, 2, 3]	
             ])
                 .pipe(refine.threshold(1, 20))
                 .pipe(assert.all(function(data) {
                     data[1].should.not.be.below(20)
                 }))
-                .pipe(assert.length(1))
+                .pipe(assert.length(2))
                 .pipe(assert.end(done))
 
         })
