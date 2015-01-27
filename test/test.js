@@ -191,5 +191,56 @@ describe('refine', function() {
         })
     })
 
+    describe('zipcode', function() {
+    it('zipcode(1) should replace a zipcode at column 1 with the city\'s name', function(done) {
+
+        streamify([
+            [0, '80302'],
+            [0, '20009']                
+        ])
+            .pipe(refine.zipcode(1))
+            .pipe(assert.first(function(data) {
+                data[1].should.be.equal('Boulder')
+            }))
+            .pipe(assert.second(function(data) {
+                data[1].should.be.equal('Washington')
+            }))
+            .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('lowercase', function() {
+    it('should replace a uppercase letters with lowercase letters', function(done) {
+
+        streamify([
+            ['A', 'AA']               
+        ])
+            .pipe(refine.lowercase())
+            .pipe(assert.all(function(data) {
+                data[0].should.be.equal('a')
+            }))
+            .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('uppercase', function() {
+    it('should replace a lowercase letters with uppercase letters', function(done) {
+
+        streamify([
+            ['a', 'aa']               
+        ])
+            .pipe(refine.uppercase())
+            .pipe(assert.all(function(data) {
+                data[0].should.be.equal('A')
+            }))
+            .pipe(assert.end(done))
+
+        })
+    })
+
+
+
 
 })
