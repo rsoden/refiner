@@ -240,7 +240,18 @@ describe('refine', function() {
         })
     })
 
+    describe('search', function() {
+    it('should replace the string by the url of the first result', function(done) {
+        var columnId = 1
 
-
-
+        streamify([
+            ['a', 'google', 1]
+        ])
+            .pipe(refine.search(columnId))
+            .pipe(assert.all(function(data) {
+                data[1].should.be.equal('http://www.google.com/')
+            }))
+            .pipe(assert.end(done))
+        })
+    })
 })
