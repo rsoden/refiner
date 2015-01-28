@@ -274,18 +274,21 @@ describe('refine', function() {
         it('translate(1,en,it) should change the english word in column 2 to its italian translation', function(done) {
 
             streamify([
-                [0, 'hello', 2, 3],   
-                [0, 'goodbye', 2, 3],  // only this should remain    
+                [0, 'hello', 2, 3]
             ])
                 .pipe(refine.translate(1, 'en', 'it'))
                 .pipe(assert.first(function(data) {
                     data[1].should.not.be.equal('hello')
                 }))
+
+            streamify([
+                [0, 'goodbye', 2, 3]
+            ])
+                .pipe(refine.translate(1, 'en', 'it'))
                 .pipe(assert.second(function(data) {
                     data[1].should.not.be.equal('goodbye')
                 }))
                 .pipe(assert.end(done))
-
         })
     })
 
