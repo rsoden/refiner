@@ -261,9 +261,9 @@ describe('refine', function() {
         streamify([
             ['636 Arapahoe Ave Boulder Colorado']               
         ])
-            .pipe(refine.geocoder())
+            .pipe(refine.geocoder(0))
             .pipe(assert.all(function(data) {
-                data[0].should.be.equal('40.0126621')
+                data[1].should.be.equal('40.0126621')
             }))
             .pipe(assert.end(done))
 
