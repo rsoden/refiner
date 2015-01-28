@@ -21,7 +21,7 @@ describe('refine', function() {
                 .pipe(assert.end(done))
 
         })
-    }),
+    })
 
     describe('head', function() {
         it('head(2) should pass through the first two rows', function(done) {
@@ -120,15 +120,15 @@ describe('refine', function() {
         it('threshold(1,20) should keep only rows whose value at column 1 is >= 20', function(done) {
 
             streamify([
-                [0, 5, 2, 3],	
-                [0, 25, 2, 3],	// only this should remain
-                [0, 3, 2, 3]	
+                [0, 19, 2, 3],	
+                [0, 20, 2, 3],	// only this should remain
+                [0, 21, 2, 3]	
             ])
                 .pipe(refine.threshold(1, 20))
                 .pipe(assert.all(function(data) {
                     data[1].should.not.be.below(20)
                 }))
-                .pipe(assert.length(1))
+                .pipe(assert.length(2))
                 .pipe(assert.end(done))
 
         })
@@ -240,15 +240,30 @@ describe('refine', function() {
         })
     })
 
+    describe('search', function() {
+    it('should replace the string by the url of the first result', function(done) {
+        var columnId = 1
+
+        streamify([
+            ['a', 'google', 1]
+        ])
+            .pipe(refine.search(columnId))
+            .pipe(assert.all(function(data) {
+                data[1].should.be.equal('http://www.google.com/')
+            }))
+            .pipe(assert.end(done))
+        })
+    })
+
     describe('geocoder', function() {
     it('should take an address and return latitude and longitude', function(done) {
 
         streamify([
             ['636 Arapahoe Ave Boulder Colorado']               
         ])
-            .pipe(refine.geocoder())
+            .pipe(refine.geocoder(0))
             .pipe(assert.all(function(data) {
-                data[0].should.be.equal('40.0126621')
+                data[1].should.be.equal('40.0126621')
             }))
             .pipe(assert.end(done))
 
@@ -309,5 +324,4 @@ describe('refine', function() {
 
         })
     })
-
 })
