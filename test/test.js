@@ -254,5 +254,60 @@ describe('refine', function() {
 
         })
     })
+    
+    describe('translate', function() {
+        it('translate(1,en,it) should change the english word in column 2 to its italian translation', function(done) {
+
+            streamify([
+                [0, 'hello', 2, 3],   
+                [0, 'goodbye', 2, 3],  // only this should remain    
+            ])
+                .pipe(refine.translate(1, 'en', 'it'))
+                .pipe(assert.first(function(data) {
+                    data[1].should.not.be.equal('hello')
+                }))
+                .pipe(assert.second(function(data) {
+                    data[1].should.not.be.equal('goodbye')
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('fuel', function() {
+        it('fuel(1) should return the latitude and longitude of the alternative fuel type code in column 2 ', function(done) {
+
+            streamify([
+                [0, 'E85', 2, 3],   
+                [0, 'CNG', 2, 3],  // only this should remain    
+            ])
+                .pipe(refine.fuel(1))
+                .pipe(assert.first(function(data) {
+                    data[1].should.not.be.equal('E85')
+                }))
+                .pipe(assert.second(function(data) {
+                    data[1].should.not.be.equal('CNG')
+                }))
+                .pipe(assert.end(done))
+
+        })
+    })
+
+    describe('swap', function() {
+        it('swap(1,2) should swap two columns', function(done) {
+
+            streamify([
+                [0, 1, 2, 3],
+                [0, 1, 2, 3]
+            ])
+                .pipe(refine.swap(1, 2))
+                .pipe(assert.all(function(data) {
+                    data.should.be.eql([0, 2, 1, 3])
+                }))
+                .pipe(assert.length(2))
+                .pipe(assert.end(done))
+
+        })
+    })
 
 })
