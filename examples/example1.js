@@ -1,11 +1,9 @@
-var csv = require('csv')
-var fs = require('fs')
-
+var csv = require('csv'),
+    fs = require('fs')
+   
 var refine = require('../lib')
 
-var filePath = '../data/colorado5.csv'
-
-fs.createReadStream(filePath)
+fs.createReadStream('../data/colorado5.csv')
     .pipe(csv.parse())
     .pipe(refine.skipfirst())
     .pipe(refine.head(2))
