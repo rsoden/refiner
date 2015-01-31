@@ -23,6 +23,21 @@ describe('transform', function() {
 
     })
 
+    it('lowercase() should work', function(done) {
+
+        streamify([
+            ['A', 'B', 'C']
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.lowercase()))
+            .pipe(refine.end())
+            .pipe(assert.first(function(row) {
+                row.should.be.eql(['a', 'b', 'c'])
+            }))
+            .pipe(assert.end(done))
+
+    })
+
     it('replace() should work', function(done) {
 
         streamify([
