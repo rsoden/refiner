@@ -41,13 +41,27 @@ describe('transform', function() {
     it('replace() should work', function(done) {
 
         streamify([
-            ['a', 'a', 'c']
+            ['b', 'a', 'c'],
+            ['aa', 'aba', 'bab']
         ])
             .pipe(refine.start())
             .pipe(select.all(transform.replace('a','b')))
             .pipe(refine.end())
             .pipe(assert.first(function(row) {
                 row.should.be.eql(['b', 'b', 'c'])
+            }))
+            .pipe(assert.second(function(row) {
+                row.should.be.eql(['bb', 'bbb', 'bbb'])
+            }))
+
+        streamify([
+            ['abc', 'ab', 'bc'],
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.replace('bc','ac')))
+            .pipe(refine.end())
+            .pipe(assert.first(function(row) {
+                row.should.be.eql(['aac', 'ab', 'ac'])
             }))
             .pipe(assert.end(done))
 
