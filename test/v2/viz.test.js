@@ -32,7 +32,7 @@ describe('viz', function() {
             .pipe(assert.first(function(data) {
                 data.should.be.eql('<tr><td>1</td><td>1</td></tr>')
             }))
-            .pipe(assert.first(function(data) {
+            .pipe(assert.second(function(data) {
                 data.should.be.eql('<tr><td>2</td><td>2</td></tr>')
             }))
             .pipe(assert.end(done))
