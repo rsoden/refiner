@@ -53,5 +53,50 @@ describe('transform', function() {
 
     })
 
+    it('filter() should work', function(done) {
+
+        streamify([
+            ['a', 'a', 'c']
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.filter("^a")))
+            .pipe(refine.end())
+            .pipe(assert.first(function(row) {
+                row[1].should.be.equal('a')
+            }))
+            .pipe(assert.end(done))
+
+    })
+
+    /*it('translate() should work', function(done) {
+
+        streamify([
+            ['hello', 'goodbye', 'thanks']
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.translate('en','it')))
+            .pipe(refine.end())
+            .pipe(assert.first(function(row) {
+                row.should.be.eql(['ciao', 'arrivederci', 'grazie'])
+            }))
+            .pipe(assert.end(done))
+
+    })
+
+    it('fuel() should work', function(done) {
+
+        streamify([
+            ['E85', 'CNG', 'LPG']
+        ])
+            .pipe(refine.start())
+            .pipe(select.all(transform.fuel()))
+            .pipe(refine.end())
+            .pipe(assert.first(function(row) {
+                row.should.be.eql(['-87.62622259999999, v41.7764073', '-87.62622259999999", 41.7764073', '-87.74629, 41.911962'])
+            }))
+            .pipe(assert.end(done))
+
+    })*/
+
 
 })
